@@ -1,0 +1,23 @@
+generate.onclick = async () => {
+  const prompt = aiPrompt.value;
+  if (!prompt) return;
+
+  const res = await fetch("http://localhost:3000/ai/ideas", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ topic: prompt })
+  });
+
+  const data = await res.json();
+
+  data.ideas.forEach((idea, i) => {
+    nodes.push({
+      x: canvas.width / 2 + i * 140 - 280,
+      y: canvas.height / 2 + 120,
+      text: idea
+    });
+  });
+
+  draw();
+};
+
