@@ -46,37 +46,16 @@ An AI-powered mind mapping application that helps you generate ideas and create 
    docker-compose down
    ```
 
-### Option 2: Local Development Setup
+### Option 2: Local Development Setup (macOS without Docker)
 
-#### Backend Setup
+#### Prerequisites for Local Setup
+- Ollama installed locally (see Option 3 for Ollama setup)
+- Node.js 16+ and npm
+- macOS machine
 
-1. **Navigate to backend directory**
-   ```bash
-   cd backend
-   ```
+#### Step 1: Install and Setup Ollama
 
-2. **Install dependencies**
-   ```bash
-   npm install
-   ```
-
-3. **Start the backend server**
-   ```bash
-   npm start
-   ```
-   - Server runs on http://localhost:3000
-
-#### Frontend Setup
-
-1. **Open index.html in a web browser**
-   - Simply open `index.html` in your default browser
-   - Or use a local server like `python -m http.server 8000`
-
-### Option 3: Local AI Setup with Ollama
-
-For using local LLM models with the application, you'll need to set up Ollama:
-
-1. **Install Ollama**
+1. **Install Ollama using Homebrew**
    ```bash
    brew install ollama
    ```
@@ -86,37 +65,91 @@ For using local LLM models with the application, you'll need to set up Ollama:
    ollama serve &
    ```
 
-3. **Pull an AI model** (choose one or both)
+3. **Pull AI Models** (choose one or both)
 
-   **Option A: Llama 3**
+   Pull Llama 3 model:
    ```bash
    ollama pull llama3
    ```
 
-   **Option B: Mistral** (recommended for faster responses)
+   Or pull Mistral model (recommended for faster responses):
    ```bash
    ollama pull mistral
    ```
 
-4. **Test Ollama API** (verify it's running correctly)
+4. **Verify Ollama is running** by testing the API:
    ```bash
    curl http://localhost:11434/api/generate \
      -d '{"model":"mistral","prompt":"Give 3 DevOps ideas","stream":false}'
    ```
 
-5. **Test Backend Integration** (with backend running on port 3000)
+#### Step 2: Setup Backend Server
+
+1. **Navigate to backend directory**
+   ```bash
+   cd backend
+   ```
+
+2. **Install Node dependencies**
+   ```bash
+   npm install
+   ```
+
+3. **Start the backend server**
+   ```bash
+   npm start
+   ```
+   - Backend API server runs on http://localhost:3000
+
+#### Step 3: Setup Frontend
+
+1. **Open index.html in a new terminal**
+   ```bash
+   # Navigate to project root
+   cd ..
+   
+   # Start a simple HTTP server
+   python3 -m http.server 8000
+   ```
+
+2. **Access the application**
+   - Open browser and go to http://localhost:8000
+   - Frontend will connect to backend on http://localhost:3000
+
+#### Step 4: Test Full Integration
+
+1. **With Ollama, Backend, and Frontend running, test the API:**
    ```bash
    curl -X POST http://localhost:3000/ai/ideas \
      -H "Content-Type: application/json" \
      -d '{"topic":"Docker"}'
    ```
 
-6. **Stop Ollama** (when done)
+2. **Expected response:**
+   ```json
+   {
+     "ideas": ["idea1", "idea2", "idea3", ...]
+   }
+   ```
+
+#### Step 5: Cleanup
+
+To stop all services:
+
+1. **Stop Ollama server**
    ```bash
    pkill -f "ollama serve"
    ```
 
-**Note:** Ollama server runs on `http://localhost:11434` by default. Make sure it's accessible when the backend tries to connect to it.
+2. **Stop Backend** (press Ctrl+C in backend terminal)
+
+3. **Stop Frontend HTTP server** (press Ctrl+C in frontend terminal)
+
+**Important Notes for Local macOS Setup:**
+- ✅ Ollama server runs on `http://localhost:11434`
+- ✅ Backend API runs on `http://localhost:3000`
+- ✅ Frontend runs on `http://localhost:8000`
+- ✅ Make sure ports 3000, 8000, and 11434 are available
 
 ## Available Endpoints
 
