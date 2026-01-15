@@ -72,6 +72,52 @@ An AI-powered mind mapping application that helps you generate ideas and create 
    - Simply open `index.html` in your default browser
    - Or use a local server like `python -m http.server 8000`
 
+### Option 3: Local AI Setup with Ollama
+
+For using local LLM models with the application, you'll need to set up Ollama:
+
+1. **Install Ollama**
+   ```bash
+   brew install ollama
+   ```
+
+2. **Start Ollama server in the background**
+   ```bash
+   ollama serve &
+   ```
+
+3. **Pull an AI model** (choose one or both)
+
+   **Option A: Llama 3**
+   ```bash
+   ollama pull llama3
+   ```
+
+   **Option B: Mistral** (recommended for faster responses)
+   ```bash
+   ollama pull mistral
+   ```
+
+4. **Test Ollama API** (verify it's running correctly)
+   ```bash
+   curl http://localhost:11434/api/generate \
+     -d '{"model":"mistral","prompt":"Give 3 DevOps ideas","stream":false}'
+   ```
+
+5. **Test Backend Integration** (with backend running on port 3000)
+   ```bash
+   curl -X POST http://localhost:3000/ai/ideas \
+     -H "Content-Type: application/json" \
+     -d '{"topic":"Docker"}'
+   ```
+
+6. **Stop Ollama** (when done)
+   ```bash
+   pkill -f "ollama serve"
+   ```
+
+**Note:** Ollama server runs on `http://localhost:11434` by default. Make sure it's accessible when the backend tries to connect to it.
+
 ## Available Endpoints
 
 ### POST /ai/ideas
